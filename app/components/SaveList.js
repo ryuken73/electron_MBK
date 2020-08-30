@@ -14,16 +14,19 @@ const lastElement = array => array[array.length - 1];
 
 function SaveList(props) {
 
-  const items = [
-      {
-          title: '아이유.wav',
-          path: 'c://temp//아이유.wave',
-          totalBytes: 12322322,
-          receivedBytes: 12322322,
-          processedPercent: 100,
-          status: 'COMPLETE'
-      }
-  ]  
+  const sampleItem = {
+    title: '아이유.wav',
+    path: 'c://temp//아이유.wave',
+    totalBytes: 12322322,
+    receivedBytes: 12322322,
+    processedPercent: 100,
+    status: 'COMPLETE',
+    downloadTime: new Date().toLocaleString(),
+    id: Date.now()+1
+  }
+  const items = new Array(20);
+  items.fill(sampleItem)
+
   const {pageIndex, imageData=[], hidden} = props;
   // console.log('&&&&&&&&&&&&&&&&&&&&&', hidden, imageData)
   const {fileTypes, fileSizeMin, fileSizeMax, filePatterns} = props;
@@ -57,8 +60,7 @@ function SaveList(props) {
   return (
     <BorderedBox display={hidden ? 'none':'flex'} alignContent="center" alignItems="flex-start" flexGrow="1" border="0" minWidth="auto" flexBasis="0" overflow="auto" bgcolor="black">
       <Box display="flex" flexDirection="column" flexWrap="wrap" width={1} overflow="auto">
-        <SaveItem></SaveItem>
-        <SaveItem></SaveItem>    
+        {items.map(item => <SaveItem key={item.id} item={item}></SaveItem>)}
       </Box>
     </BorderedBox>
   );

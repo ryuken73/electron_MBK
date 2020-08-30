@@ -15,7 +15,7 @@ export const setStatusHidden = createAction(SET_STATUS_HIDDEN);
 
 const initialState = {
     downloadItems: new Map(),
-    statusHidden : true
+    statusHidden : false
 }
 
 // reducer
