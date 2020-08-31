@@ -4,7 +4,7 @@ import Box from '@material-ui/core/Box';
 import FullHeightContainer from './template/FullHeightContainer';
 import FirstChildSection from './template/FirstChildSection';
 import WebView from './WebView';
-import SavePanelContainer from './ControlPanel';
+import ControlPanelContainer from '../containers/ControlPanelContainer';
 import SaveTabContainer from './ItemTab';
 import SaveListContainer from './ItemList';
 import MessageContainer from './MessagePanel';
@@ -38,12 +38,6 @@ function App(props) {
     const tabId = new Date().toDateString();
     addTab(tabId);
     setTodayTabId(tabId);
-    // ipcRenderer.on('downloadStarted', onDownloadStart);
-    // ipcRenderer.on('downloadProgress', onUpdateProgress);
-    // ipcRenderer.on('downloadInterrupted', onUpdateStatus('INTERRUPTED'));
-    // ipcRenderer.on('downloadPaused', onUpdateStatus('PAUSED'));
-    // ipcRenderer.on('downloadCompleted', onUpdateStatus('COMPLETED'));
-    // ipcRenderer.on('downloadFailed', onUpdateStatus('FAILED'));
   },[])
 
   React.useEffect(() => {
@@ -117,7 +111,7 @@ function App(props) {
       <Box display="flex" flexDirection="column" height="1">
         <WebView showBrowser={showBrowser} hideBrowser={hideBrowser}></WebView>   
         <Box display={statusHidden ? "none": "flex"} className="itemList" flexDirection="column" flexGrow="1" px="3px">
-          <SavePanelContainer></SavePanelContainer>
+          <ControlPanelContainer></ControlPanelContainer>
           <SaveTabContainer></SaveTabContainer>
           <MessageContainer></MessageContainer>
         </Box>

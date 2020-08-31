@@ -12,7 +12,7 @@ export const selectAllItems = createAction(SELECT_ALL_ITEMS);
 export const deleteSelectedItems = createAction(DELETE_SELECTED_ITEMS);
 
 const initialState = {
-    saveDirectory : null
+    saveDirectory : "c://temp"
 }
 
 // reducer 

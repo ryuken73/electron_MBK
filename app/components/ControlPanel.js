@@ -10,12 +10,12 @@ const { dialog, shell } = require('electron').remote;
 const path = require('path');
 
 export default function ControlPanel(props) {
-    // console.log('######################## re-render SavePenel', props)
-    const {deleteAfterSave, closeTabAfterSave, saveDirectory, pageSaveDirectory="d:\\temp", currentTab, pageTitles} = props;
-    // const {setPageSaveDirectory, deleteFilesSelected, saveFilesSelected} = props.SavePanelAction;
-    // const {setAllImageCheck, setImageShowPreview} = props.ImageListAction;
-    const {imageShow, allImageChecked, enableSaveButton, enableDeleteButton} = props;
-    const enableSaveAllButton = true;
+    console.log('######################## re-render ControlPanel', props)
+    const {saveDirectory="d:\\temp"} = props;
+    const {setSaveDirectory, selectAllItems, deleteSelectedItems} = props.ControlPanelActions;
+    const allImageChecked = false;
+    const enableDeleteButton = false;
+    const currentTab = 11;
 
     // React.useEffect(() => {
     //     const tabTitle = pageTitles.get(currentTab) || '';
@@ -33,18 +33,18 @@ export default function ControlPanel(props) {
     }
 
     const onSaveDirectoryChange = (event) => {
-        // setPageSaveDirectory(event.target.value)
+        setSaveDirectory(event.target.value)
     }
 
     const onClickSelectSaveDirectory = () => {
         dialog.showOpenDialog(({properties:['openDirectory']}), filePaths=> {
           if(filePaths === undefined) return;
-        //   setPageSaveDirectory(filePaths[0]);      
+          setSaveDirectory(filePaths[0]);      
         })
     };
     
     const onClickLocateDirectory = () => {
-        shell.openItem(pageSaveDirectory);
+        shell.openItem(saveDirectory);
     }
     const onClickSetAllChecked = (event) => {
         // setAllImageCheck(true);
@@ -65,7 +65,7 @@ export default function ControlPanel(props) {
                         <SmallMarginTextField
                             variant="outlined"
                             margin="dense"
-                            value={pageSaveDirectory}
+                            value={saveDirectory}
                             onChange={onSaveDirectoryChange}
                             pt="8px"
                             pb="8px"
