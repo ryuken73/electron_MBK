@@ -104,7 +104,7 @@ app.on('ready', async () => {
         savePath, 
         totalBytes,
         receivedBytes:0,
-        status:'STARTED',
+        status:'started',
         downloadStartTime: Date.now(),
         get processedPercent() {
           return parseInt(((receivedByte/totalBytes) * 100).toFixed(0));
@@ -115,11 +115,11 @@ app.on('ready', async () => {
       item.on('updated', (event, state) => {
         if (state === 'interrupted') {
           console.log('Download is interrupted but can be resumed');
-          mainWindow.webContents.send('downloadInterrupted', id);
+          mainWindow.webContents.send('downloadStatusChanged', {id, status:'interrupted'});
         } else if (state === 'progressing') {
           if (item.isPaused()) {
               console.log('Download is paused')
-              mainWindow.webContents.send('downloadPaused', id);
+          mainWindow.webContents.send('downloadStatusChanged', {id, status:'paused'});
           } else {
               const receivedBytes = item.getReceivedBytes();
               console.log(`Received bytes: ${receivedBytes}`)
@@ -129,10 +129,10 @@ app.on('ready', async () => {
       })
       item.once('done', (event, state) => {
         if (state === 'completed') {
-          mainWindow.webContents.send('downloadCompleted', id);
+          mainWindow.webContents.send('downloadStatusChanged', {id, status:'completed'});
           console.log('Download successfully')
         } else {
-          mainWindow.webContents.send('downloadFailed', id);
+          mainWindow.webContents.send('downloadStatusChanged', {id, status:'faild'});
           console.log(`Download failed: ${state}`)
         }
       })  

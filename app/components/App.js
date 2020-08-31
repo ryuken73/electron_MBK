@@ -40,10 +40,10 @@ function App(props) {
     setTodayTabId(tabId);
     // ipcRenderer.on('downloadStarted', onDownloadStart);
     // ipcRenderer.on('downloadProgress', onUpdateProgress);
-    ipcRenderer.on('downloadInterrupted', onUpdateStatus('INTERRUPTED'));
-    ipcRenderer.on('downloadPaused', onUpdateStatus('PAUSED'));
-    ipcRenderer.on('downloadCompleted', onUpdateStatus('COMPLETED'));
-    ipcRenderer.on('downloadFailed', onUpdateStatus('FAILED'));
+    // ipcRenderer.on('downloadInterrupted', onUpdateStatus('INTERRUPTED'));
+    // ipcRenderer.on('downloadPaused', onUpdateStatus('PAUSED'));
+    // ipcRenderer.on('downloadCompleted', onUpdateStatus('COMPLETED'));
+    // ipcRenderer.on('downloadFailed', onUpdateStatus('FAILED'));
   },[])
 
   React.useEffect(() => {
@@ -51,8 +51,11 @@ function App(props) {
     // to refresh event handler
     ipcRenderer.removeAllListeners('downloadStarted');
     ipcRenderer.removeAllListeners('downloadProgress');
+    ipcRenderer.removeAllListeners('downloadStatusChanged');
+
     ipcRenderer.on('downloadStarted', onDownloadStart(todayTabId));
     ipcRenderer.on('downloadProgress', onUpdateProgress(todayTabId));
+    ipcRenderer.on('downloadStatusChanged', onUpdateStatus(todayTabId));
 
   },[todayTabId])
 
@@ -81,12 +84,14 @@ function App(props) {
       updateTabItem({tabId:todayTabId, itemId:id, property: 'receivedBytes', value: receivedBytes});
     }
   }
-  const onUpdateStatus = status => {
-      return (event, id) => {
-          // updateDownloadStatus(id, status);
-          console.log(id, status)
-      }
-  }
+  
+  const onUpdateStatus = todayTabId => {
+    return (event, statusInfo) => {
+      const {id, status} = statusInfo;
+      updateTabItem({tabId:todayTabId, itemId:id, property: 'status', value: status});
+      
+    }
+  } 
 
   const showBrowser = event => {
     const mainWindow = getCurrentWindow();
