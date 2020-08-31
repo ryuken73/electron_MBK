@@ -105,7 +105,7 @@ app.on('ready', async () => {
         totalBytes,
         receivedBytes:0,
         status:'STARTED',
-        startDate: new Date(),
+        downloadStartTime: Date.now(),
         get processedPercent() {
           return parseInt(((receivedByte/totalBytes) * 100).toFixed(0));
         }

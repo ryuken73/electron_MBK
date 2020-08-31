@@ -7,7 +7,7 @@ import ProgressWithPercent from './template/ProgressWithPercent';
 import {SmallButton, SmallMarginTextField} from './template/smallComponents'
 
 
-export default function SaveItem(props){
+export default function Item(props){
     const imageShow = false;
     const {title,path,totalBytes,receivedBytes,processedPercent,status,downloadTime} = props.item;
     const onClickCheckBox = () => {};

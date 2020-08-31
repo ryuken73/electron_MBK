@@ -4,10 +4,9 @@ import Box from '@material-ui/core/Box';
 import FullHeightContainer from './template/FullHeightContainer';
 import FirstChildSection from './template/FirstChildSection';
 import WebView from './WebView';
-import DownloadStatus from './DownloadStatus';
-import SavePanelContainer from './SavePanel';
-import SaveTabContainer from './SaveTab';
-import SaveListContainer from './SaveList';
+import SavePanelContainer from './ControlPanel';
+import SaveTabContainer from './ItemTab';
+import SaveListContainer from './ItemList';
 import MessageContainer from './MessagePanel';
 const { BrowserView, getCurrentWindow } = require('electron').remote;
 const { ipcRenderer } = require('electron');
@@ -30,16 +29,18 @@ const theme = createMuiTheme({
 
 function App(props) {
   
-  const {page, statusHidden, currentPageId} = props;
-  const {addPage, addItem, setCurrentPageId, updateProgress, setStatusHidden} = props.ItemActions;
+  const {statusHidden, currentTabId} = props;
+  const {setCurrentTabId} = props.ItemTabActions;
+  const {setStatusHidden} = props.AppActions;
+  const {addTab, addTabItem, updateTabItem} = props.ItemListActions;
 
-  console.log('#### rerender app.js', currentPageId)
+  console.log('#### rerender app.js', currentTabId)
   React.useEffect(() => {
-    const pageId = new Date().toDateString();
-    addPage(pageId);
-    setCurrentPageId(pageId);
+    const tabId = new Date().toDateString();
+    addTab(tabId);
+    setCurrentTabId(tabId);
     // ipcRenderer.on('downloadStarted', onDownloadStart);
-    ipcRenderer.on('downloadProgress', onUpdateProgress);
+    // ipcRenderer.on('downloadProgress', onUpdateProgress);
     ipcRenderer.on('downloadInterrupted', onUpdateStatus('INTERRUPTED'));
     ipcRenderer.on('downloadPaused', onUpdateStatus('PAUSED'));
     ipcRenderer.on('downloadCompleted', onUpdateStatus('COMPLETED'));
@@ -47,27 +48,39 @@ function App(props) {
   },[])
 
   React.useEffect(() => {
-    console.log('^^^ trigger attaching event handler for download start', currentPageId);
+    console.log('^^^ trigger attaching event handler for download start', currentTabId);
     // to refresh event handler
     ipcRenderer.removeAllListeners('downloadStarted');
-    ipcRenderer.on('downloadStarted', onDownloadStart(currentPageId));
-  },[currentPageId])
+    ipcRenderer.removeAllListeners('downloadProgress');
+    ipcRenderer.on('downloadStarted', onDownloadStart(currentTabId));
+    ipcRenderer.on('downloadProgress', onUpdateProgress(currentTabId));
 
-  const onDownloadStart = currentPageId => {
+  },[currentTabId])
+
+  const onDownloadStart = currentTabId => {
     return (event, itemInfo) => {
-      const {startDate} = itemInfo;
-      if(startDate.toDateString() !== currentPageId){
-        
+      const {downloadStartTime} = itemInfo;
+      console.log(`${downloadStartTime}`)
+      const downloadStartDate = new Date(downloadStartTime).toDateString();
+      const DATE_CHANGED = downloadStartDate !== currentTabId || false;
+      console.log(`date : [${currentTabId}] to [${downloadStartDate}]`);
+
+      if(DATE_CHANGED){
+        console.log(`date changed from [${currentTabId}] to [${downloadStartDate}]`);
+        addPage(downloadStartDate);
+        setCurrentPageId(downloadStartDate);
+        currentTabId = downloadStartDate;
       }
-      console.log(startDate, currentPageId);
-      addItem({pageId:currentPageId, itemInfo});
+      addTabItem({tabId: currentTabId, itemInfo});
       hideBrowser();
     }
   }
 
-  const onUpdateProgress = (event, progressInfo) => {
+  const onUpdateProgress = currentTabId => {
+    return (event, progressInfo) => {
       const {id, receivedBytes} = progressInfo;
-      updateProgress({pageId:currentPageId, id, receivedBytes});
+      updateTabItem({tabId:currentTabId, itemId:id, property: 'receivedBytes', value: receivedBytes});
+    }
   }
   const onUpdateStatus = status => {
       return (event, id) => {

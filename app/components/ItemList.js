@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import BorderedBox from './template/BorderedBox';
 import Button from '@material-ui/core/Button';
-import SaveItem from './SaveItem';
+import Item from './Item';
 
 const toggleCheck = () => {};
 
@@ -12,7 +12,7 @@ const firsttElement = array => array[0];
 const lastElement = array => array[array.length - 1];
 
 
-function SaveList(props) {
+function ItemList(props) {
 
   const sampleItem = {
     title: '아이유.wav',
@@ -21,7 +21,7 @@ function SaveList(props) {
     receivedBytes: 12322322,
     processedPercent: 100,
     status: 'COMPLETE',
-    downloadTime: new Date().toLocaleString(),
+    downloadStartTime: Date.now(),
     id: Date.now()+1
   }
   const items = new Array(20);
@@ -60,10 +60,10 @@ function SaveList(props) {
   return (
     <BorderedBox display={hidden ? 'none':'flex'} alignContent="center" alignItems="flex-start" flexGrow="1" border="0" minWidth="auto" flexBasis="0" overflow="auto" bgcolor="black">
       <Box display="flex" flexDirection="column" flexWrap="wrap" width={1} overflow="auto">
-        {items.map(item => <SaveItem key={item.id} item={item}></SaveItem>)}
+        {items.map(item => <Item key={item.id} item={item}></Item>)}
       </Box>
     </BorderedBox>
   );
 }
 
-export default React.memo(SaveList);
+export default React.memo(ItemList);

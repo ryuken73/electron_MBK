@@ -9,7 +9,7 @@ import {SmallButton, SmallMarginTextField} from './template/smallComponents'
 const { dialog, shell } = require('electron').remote;
 const path = require('path');
 
-export default function SavePanel(props) {
+export default function ControlPanel(props) {
     // console.log('######################## re-render SavePenel', props)
     const {deleteAfterSave, closeTabAfterSave, saveDirectory, pageSaveDirectory="d:\\temp", currentTab, pageTitles} = props;
     // const {setPageSaveDirectory, deleteFilesSelected, saveFilesSelected} = props.SavePanelAction;

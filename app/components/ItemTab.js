@@ -4,7 +4,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import BorderedBox from './template/BorderedBox';
 // import ImageListContainer from '../../../containers/ImageListContainer';
-import SaveListContainer from './SaveList';
+import SaveListContainer from './ItemList';
 import { Typography } from '@material-ui/core';
 import styled from 'styled-components';
 
@@ -33,7 +33,7 @@ const stopPropagation = (event) => {
     event.stopPropagation();
 }
 
-function ImageTabs(props) { 
+function ItemTab(props) { 
     console.log('!!!!!!!!!!!!!!!',props);
     
     const {currentTab=1, pageItems=new Map([[1,{}], [2,{}]]), pageTitles=[[1,'page1'],[2,'page2']]} = props;
@@ -79,4 +79,4 @@ function ImageTabs(props) {
         )
 }
 
-export default React.memo(ImageTabs);
+export default React.memo(ItemTab);
