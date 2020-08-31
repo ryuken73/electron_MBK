@@ -82,7 +82,7 @@ app.on('ready', async () => {
       nodeIntegration: true,
       nativeWindowOpen: true
     }
-  });
+  }); 
 
   const session = mainWindow.webContents.session;
   session.on('will-download', (event, item, webContents) => {
