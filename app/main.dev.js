@@ -106,9 +106,6 @@ app.on('ready', async () => {
         receivedBytes:0,
         status:'started',
         downloadStartTime: Date.now(),
-        get processedPercent() {
-          return parseInt(((receivedByte/totalBytes) * 100).toFixed(0));
-        }
       }
       mainWindow.webContents.send('downloadStarted', itemInfo);
   

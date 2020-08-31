@@ -73,6 +73,7 @@ function App(props) {
         setTodayTabId(downloadStartDate);
         todayTabId = downloadStartDate;
       }
+      
       addTabItem({tabId: todayTabId, itemInfo});
       hideBrowser();
     }
@@ -84,7 +85,7 @@ function App(props) {
       updateTabItem({tabId:todayTabId, itemId:id, property: 'receivedBytes', value: receivedBytes});
     }
   }
-  
+
   const onUpdateStatus = todayTabId => {
     return (event, statusInfo) => {
       const {id, status} = statusInfo;
