@@ -5,8 +5,11 @@ import * as itemListActions from '../modules/itemList';
 
 function mapStateToProps(state, ownProps) {
   console.log(state)
+  const {tabId, hidden} = ownProps;
   return {
-    tabItems: state.itemList.tabItems,
+    tabId,
+    hidden,
+    tabItems: state.itemList.tabItems,    
   }
 }
 

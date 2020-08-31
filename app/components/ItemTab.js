@@ -3,8 +3,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import BorderedBox from './template/BorderedBox';
-// import ImageListContainer from '../../../containers/ImageListContainer';
-import SaveListContainer from './ItemList';
+import ItemListContainer from '../containers/ItemListContainer';
 import { Typography } from '@material-ui/core';
 import styled from 'styled-components';
 
@@ -21,11 +20,11 @@ function TabPanel(props){
     const {value, index} = props;
     const hidden = (value === index) ? false : true;
     return (
-        <SaveListContainer
-            pageIndex = {index}
+        <ItemListContainer
+            tabId = {index}
             hidden = {hidden}
         >
-        </SaveListContainer>
+        </ItemListContainer>
     )
 }
 
@@ -36,7 +35,9 @@ const stopPropagation = (event) => {
 function ItemTab(props) { 
     console.log('!!!!!!!!!!!!!!!',props);
     
-    const {currentTab=1, pageItems=new Map([[1,{}], [2,{}]]), pageTitles=[[1,'page1'],[2,'page2']]} = props;
+    // const {currentTabId, pageItems=new Map([[1,{}], [2,{}]]), pageTitles=[[1,'page1'],[2,'page2']]} = props;
+    const {currentTabId, tabItems} = props;
+    const tabIds = [...tabItems.keys()];
     // const {setCurrentTab, setAllImageCheck} = props.ImageActions;
     // const onChange = React.useCallback((event, newValue) => {
     //     setCurrentTab(newValue);
@@ -53,28 +54,28 @@ function ItemTab(props) {
             <BorderedBox display='flex' alignContent="center" alignItems="flex-start" flexGrow="1" border="1" minWidth="auto" flexBasis="0" overflow="hidden" onClick={stopPropagation}>
                 <StyledAppBar position="static" color="primary">
                     <Tabs
-                        value={currentTab}
+                        value={currentTabId}
                         onChange={onChange}
                         indicatorColor="primary"
                         variant="scrollable"
                         scrollButtons="on"
                         aria-label="scrollable auto tabs"
                     >
-                        {[...pageTitles].map(pageTitle => {
-                            const [pageIndex, title] = pageTitle;
-                            const items = pageItems.get(pageIndex) || [];
-                            const itemCount = items.length || 0;
-                            return <StyledTab key={pageIndex} value={pageIndex} label={(title || 'new') + ` [${itemCount}]`} aria-controls={`tabpanel-${pageIndex}`} wrapped></StyledTab>                      
+                        {tabIds.map(tabId => {
+                            const tabTitle = tabId;
+                            const items = tabItems.get(tabId);
+                            const tabItemCount = items.length || 0;
+                            return <StyledTab key={tabId} value={tabId} label={tabId + ` [${tabItemCount}]`} aria-controls={`tabpanel-${tabId}`} wrapped></StyledTab>                                        
                         })}
 
                     </Tabs>
                 </StyledAppBar>
             </BorderedBox>
-            {/* {[...pageItems].map(item => {
-                const [pageIndex, itemData] = item;
-                return <TabPanel value={currentTab} key={pageIndex} index={pageIndex}></TabPanel>                
+            {[...tabItems].map(tabItem => {
+                const [tabId, item] = tabItem;
+                return <TabPanel value={currentTabId} key={tabId} index={tabId}></TabPanel>                
 
-            })} */}
+            })}
         </BorderedBox>
         )
 }

@@ -96,7 +96,6 @@ app.on('ready', async () => {
       const url = item.getURL();
       const savePath = item.getSavePath();
       const totalBytes = item.getTotalBytes();
-      const startDateString = new Date().toLocaleDateString();
       const itemInfo = {
         id, 
         url, 

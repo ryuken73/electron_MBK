@@ -5,8 +5,8 @@ import FullHeightContainer from './template/FullHeightContainer';
 import FirstChildSection from './template/FirstChildSection';
 import WebView from './WebView';
 import ControlPanelContainer from '../containers/ControlPanelContainer';
-import SaveTabContainer from './ItemTab';
-import SaveListContainer from './ItemList';
+import ItemTabContainer from '../containers/ItemTabContainer';
+// import SaveListContainer from './ItemList';
 import MessageContainer from './MessagePanel';
 const { BrowserView, getCurrentWindow } = require('electron').remote;
 const { ipcRenderer } = require('electron');
@@ -35,7 +35,7 @@ function App(props) {
 
   console.log('#### rerender app.js', todayTabId)
   React.useEffect(() => {
-    const tabId = new Date().toDateString();
+    const tabId = new Date().toLocaleDateString();
     addTab(tabId);
     setTodayTabId(tabId);
   },[])
@@ -57,7 +57,7 @@ function App(props) {
     return (event, itemInfo) => {
       const {downloadStartTime} = itemInfo;
       console.log(`${downloadStartTime}`)
-      const downloadStartDate = new Date(downloadStartTime).toDateString();
+      const downloadStartDate = new Date(downloadStartTime).toLocaleDateString();
       const DATE_CHANGED = downloadStartDate !== todayTabId || false;
       console.log(`date : [${todayTabId}] to [${downloadStartDate}]`);
 
@@ -112,7 +112,7 @@ function App(props) {
         <WebView showBrowser={showBrowser} hideBrowser={hideBrowser}></WebView>   
         <Box display={statusHidden ? "none": "flex"} className="itemList" flexDirection="column" flexGrow="1" px="3px">
           <ControlPanelContainer></ControlPanelContainer>
-          <SaveTabContainer></SaveTabContainer>
+          <ItemTabContainer></ItemTabContainer>
           <MessageContainer></MessageContainer>
         </Box>
       </Box>

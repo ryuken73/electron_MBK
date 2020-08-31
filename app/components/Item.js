@@ -9,7 +9,8 @@ import {SmallButton, SmallMarginTextField} from './template/smallComponents'
 
 export default function Item(props){
     const imageShow = false;
-    const {title,path,totalBytes,receivedBytes,processedPercent,status,downloadTime} = props.item;
+    const {fname, savePath, url, totalBytes, receivedBytes, status, downloadStartTime} = props.item;
+    const processedPercent = ((receivedBytes/totalBytes) * 100).toFixed(0);
     const onClickCheckBox = () => {};
     return (
         <Box display="flex" width="0.9" justifyContent="flex-start" alignItems="center">
@@ -17,12 +18,12 @@ export default function Item(props){
             <Grid container spacing={1} alignItems="center">
                 <Grid>
                     <Box mx="10px">
-                        <Typography variant="caption">{title}</Typography>
+                        <Typography variant="caption">{fname}</Typography>
                     </Box>
                 </Grid>
                 <Grid>
                     <Box mx="10px">
-                        <Typography variant="caption">{path}</Typography>
+                        <Typography variant="caption">{savePath}</Typography>
                     </Box>
                 </Grid>
                 <Grid>
@@ -47,7 +48,7 @@ export default function Item(props){
                 </Grid>
                 <Grid>
                     <Box mx="10px">
-                        <Typography variant="caption">{downloadTime}</Typography>
+                        <Typography variant="caption">{new Date(downloadStartTime).toLocaleString()}</Typography>
                     </Box>
                 </Grid>
 

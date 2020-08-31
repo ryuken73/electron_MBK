@@ -6,7 +6,9 @@ import * as itemTabActions from '../modules/itemTab';
 function mapStateToProps(state, ownProps) {
   console.log(state)
   return {
-    currentTabId: state.itemTab.currentTabId,
+    currentTabId: state.itemTab.currentTabId || state.app.todayTabId,
+    todayTabId: state.app.todayTabId,
+    tabItems: state.itemList.tabItems
   }
 }
 

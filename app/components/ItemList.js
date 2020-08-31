@@ -7,27 +7,27 @@ import Button from '@material-ui/core/Button';
 import Item from './Item';
 
 const toggleCheck = () => {};
-
 const firsttElement = array => array[0];
 const lastElement = array => array[array.length - 1];
 
 
 function ItemList(props) {
 
-  const sampleItem = {
-    title: '아이유.wav',
-    path: 'c://temp//아이유.wave',
-    totalBytes: 12322322,
-    receivedBytes: 12322322,
-    processedPercent: 100,
-    status: 'COMPLETE',
-    downloadStartTime: Date.now(),
-    id: Date.now()+1
-  }
-  const items = new Array(20);
-  items.fill(sampleItem)
+  // const sampleItem = {
+  //   title: '아이유.wav',
+  //   path: 'c://temp//아이유.wave',
+  //   totalBytes: 12322322,
+  //   receivedBytes: 12322322,
+  //   processedPercent: 100,
+  //   status: 'COMPLETE',
+  //   downloadStartTime: Date.now(),
+  //   id: Date.now()+1
+  // }
+  // const items = new Array(20);
+  // items.fill(sampleItem)
 
-  const {pageIndex, imageData=[], hidden} = props;
+  const {tabId, hidden, tabItems} = props;
+  const items = tabItems.get(tabId);
   // console.log('&&&&&&&&&&&&&&&&&&&&&', hidden, imageData)
   const {fileTypes, fileSizeMin, fileSizeMax, filePatterns} = props;
   const {imagePreviewOpen, imagePreviewSrc} = props;
