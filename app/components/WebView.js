@@ -6,7 +6,8 @@ import FullHeightContainer from './template/FullHeightContainer'
 const { BrowserView, BrowserWindow, getCurrentWindow } = require('electron').remote;
 const { ipcRenderer } = require('electron');
 
-export default function WebView({setStatusHidden}) {
+export default function WebView(props) {
+    const {showBrowser, hideBrowser} = props;
     let webViewBound;
     React.useEffect(() => {
         const view = new BrowserView({
@@ -28,23 +29,6 @@ export default function WebView({setStatusHidden}) {
         view.webContents.on('did-frame-finish-load', (...args) => console.log('did finish frmae load'));
         view.webContents.on('did-navigate', (...args) => console.log('did navigate'));
     },[])
-
-    const showBrowser = event => {
-        const mainWindow = getCurrentWindow();
-        const view = mainWindow.getBrowserView();
-        const [width, height] = mainWindow.getSize()
-        // view.setBounds(webViewBound);
-        view.setBounds({x:0, y:35, width:width-20, height:height-10});
-        view.setAutoResize({width:true, height:true})
-
-
-    }
-    const hideBrowser = event => {
-        const mainWindow = getCurrentWindow();
-        const view = mainWindow.getBrowserView();
-        view.setBounds({x:5, y:35, width:0, height:0}); 
-        view.setAutoResize({width:false, height:false})
-    }
 
     return (
         <Box flexGrow="0" border="10">

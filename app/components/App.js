@@ -30,11 +30,15 @@ const theme = createMuiTheme({
 
 function App(props) {
   
-  const {downloadItems, statusHidden} = props;
-  const {addItem, updateProgress, setStatusHidden} = props.ItemActions;
+  const {page, statusHidden, currentPageId} = props;
+  const {addPage, addItem, setCurrentPageId, updateProgress, setStatusHidden} = props.ItemActions;
 
+  console.log('#### rerender app.js', currentPageId)
   React.useEffect(() => {
-    ipcRenderer.on('downloadStarted', onDownloadStart);
+    const pageId = new Date().toDateString();
+    addPage(pageId);
+    setCurrentPageId(pageId);
+    // ipcRenderer.on('downloadStarted', onDownloadStart);
     ipcRenderer.on('downloadProgress', onUpdateProgress);
     ipcRenderer.on('downloadInterrupted', onUpdateStatus('INTERRUPTED'));
     ipcRenderer.on('downloadPaused', onUpdateStatus('PAUSED'));
@@ -42,13 +46,28 @@ function App(props) {
     ipcRenderer.on('downloadFailed', onUpdateStatus('FAILED'));
   },[])
 
-  const onDownloadStart = (event, itemInfo) => {
-    addItem({itemInfo});
-    showView();
+  React.useEffect(() => {
+    console.log('^^^ trigger attaching event handler for download start', currentPageId);
+    // to refresh event handler
+    ipcRenderer.removeAllListeners('downloadStarted');
+    ipcRenderer.on('downloadStarted', onDownloadStart(currentPageId));
+  },[currentPageId])
+
+  const onDownloadStart = currentPageId => {
+    return (event, itemInfo) => {
+      const {startDate} = itemInfo;
+      if(startDate.toDateString() !== currentPageId){
+        
+      }
+      console.log(startDate, currentPageId);
+      addItem({pageId:currentPageId, itemInfo});
+      hideBrowser();
+    }
   }
+
   const onUpdateProgress = (event, progressInfo) => {
       const {id, receivedBytes} = progressInfo;
-      updateProgress({id, receivedBytes});
+      updateProgress({pageId:currentPageId, id, receivedBytes});
   }
   const onUpdateStatus = status => {
       return (event, id) => {
@@ -57,31 +76,33 @@ function App(props) {
       }
   }
 
-  const showView = event => {
+  const showBrowser = event => {
     const mainWindow = getCurrentWindow();
-    const [width, height] = mainWindow.getSize();
     const view = mainWindow.getBrowserView();
-    view.setBounds({x:5, y:30, width:width-400, height:height-10})
-    setStatusHidden(false)
+    const [width, height] = mainWindow.getSize()
+    // view.setBounds(webViewBound);
+    view.setBounds({x:0, y:35, width:width-20, height:height-10});
+    view.setAutoResize({width:true, height:true});
+    setStatusHidden(true);
+  }
+
+  const hideBrowser = event => {
+    const mainWindow = getCurrentWindow();
+    const view = mainWindow.getBrowserView();
+    view.setBounds({x:5, y:35, width:0, height:0}); 
+    view.setAutoResize({width:false, height:false});
+    setStatusHidden(false);
   }
 
   return (
     <ThemeProvider theme={theme}>
       <Box display="flex" flexDirection="column" height="1">
-        <WebView
-          setStatusHidden = {setStatusHidden}
-        ></WebView>   
-        <Box className="itemList" display="flex" flexDirection="column" flexGrow="1" px="3px">
+        <WebView showBrowser={showBrowser} hideBrowser={hideBrowser}></WebView>   
+        <Box display={statusHidden ? "none": "flex"} className="itemList" flexDirection="column" flexGrow="1" px="3px">
           <SavePanelContainer></SavePanelContainer>
           <SaveTabContainer></SaveTabContainer>
           <MessageContainer></MessageContainer>
-          {/* <ImageTabsContainer></ImageTabsContainer>
-          <MessagePanelContainer></MessagePanelContainer> */}
         </Box>
-        {/* <DownloadStatus 
-          downloadItems = {downloadItems}
-          hidden = {statusHidden}
-        ></DownloadStatus>        */}
       </Box>
 
     </ThemeProvider>

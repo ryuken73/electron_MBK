@@ -96,6 +96,7 @@ app.on('ready', async () => {
       const url = item.getURL();
       const savePath = item.getSavePath();
       const totalBytes = item.getTotalBytes();
+      const startDateString = new Date().toLocaleDateString();
       const itemInfo = {
         id, 
         url, 
@@ -104,8 +105,9 @@ app.on('ready', async () => {
         totalBytes,
         receivedBytes:0,
         status:'STARTED',
+        startDate: new Date(),
         get processedPercent() {
-          return ((this.receivedByte/this.totalBytes) * 100).toFixed(0);
+          return parseInt(((receivedByte/totalBytes) * 100).toFixed(0));
         }
       }
       mainWindow.webContents.send('downloadStarted', itemInfo);

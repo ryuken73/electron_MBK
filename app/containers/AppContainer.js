@@ -6,8 +6,9 @@ import * as itemActions from '../modules/downloadItems';
 function mapStateToProps(state, ownProps) {
   console.log(state)
   return {
-    downloadItems: state.downloadItems.downloadItems,
-    statusHidden: state.downloadItems.statusHidden
+    pages: state.downloadItems.pages,
+    statusHidden: state.downloadItems.statusHidden,
+    currentPageId: state.downloadItems.currentPageId
   }
 }
 

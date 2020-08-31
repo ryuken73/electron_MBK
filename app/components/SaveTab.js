@@ -70,11 +70,11 @@ function ImageTabs(props) {
                     </Tabs>
                 </StyledAppBar>
             </BorderedBox>
-            {[...pageItems].map(item => {
+            {/* {[...pageItems].map(item => {
                 const [pageIndex, itemData] = item;
                 return <TabPanel value={currentTab} key={pageIndex} index={pageIndex}></TabPanel>                
 
-            })}
+            })} */}
         </BorderedBox>
         )
 }
