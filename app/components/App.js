@@ -29,16 +29,15 @@ const theme = createMuiTheme({
 
 function App(props) {
   
-  const {statusHidden, currentTabId} = props;
-  const {setCurrentTabId} = props.ItemTabActions;
-  const {setStatusHidden} = props.AppActions;
+  const {statusHidden, todayTabId} = props;
+  const {setTodayTabId, setStatusHidden} = props.AppActions;
   const {addTab, addTabItem, updateTabItem} = props.ItemListActions;
 
-  console.log('#### rerender app.js', currentTabId)
+  console.log('#### rerender app.js', todayTabId)
   React.useEffect(() => {
     const tabId = new Date().toDateString();
     addTab(tabId);
-    setCurrentTabId(tabId);
+    setTodayTabId(tabId);
     // ipcRenderer.on('downloadStarted', onDownloadStart);
     // ipcRenderer.on('downloadProgress', onUpdateProgress);
     ipcRenderer.on('downloadInterrupted', onUpdateStatus('INTERRUPTED'));
@@ -48,38 +47,38 @@ function App(props) {
   },[])
 
   React.useEffect(() => {
-    console.log('^^^ trigger attaching event handler for download start', currentTabId);
+    console.log('^^^ trigger attaching event handler for download start', todayTabId);
     // to refresh event handler
     ipcRenderer.removeAllListeners('downloadStarted');
     ipcRenderer.removeAllListeners('downloadProgress');
-    ipcRenderer.on('downloadStarted', onDownloadStart(currentTabId));
-    ipcRenderer.on('downloadProgress', onUpdateProgress(currentTabId));
+    ipcRenderer.on('downloadStarted', onDownloadStart(todayTabId));
+    ipcRenderer.on('downloadProgress', onUpdateProgress(todayTabId));
 
-  },[currentTabId])
+  },[todayTabId])
 
-  const onDownloadStart = currentTabId => {
+  const onDownloadStart = todayTabId => {
     return (event, itemInfo) => {
       const {downloadStartTime} = itemInfo;
       console.log(`${downloadStartTime}`)
       const downloadStartDate = new Date(downloadStartTime).toDateString();
-      const DATE_CHANGED = downloadStartDate !== currentTabId || false;
-      console.log(`date : [${currentTabId}] to [${downloadStartDate}]`);
+      const DATE_CHANGED = downloadStartDate !== todayTabId || false;
+      console.log(`date : [${todayTabId}] to [${downloadStartDate}]`);
 
       if(DATE_CHANGED){
-        console.log(`date changed from [${currentTabId}] to [${downloadStartDate}]`);
-        addPage(downloadStartDate);
-        setCurrentPageId(downloadStartDate);
-        currentTabId = downloadStartDate;
+        console.log(`date changed from [${todayTabId}] to [${downloadStartDate}]`);
+        addTab(downloadStartDate);
+        setTodayTabId(downloadStartDate);
+        todayTabId = downloadStartDate;
       }
-      addTabItem({tabId: currentTabId, itemInfo});
+      addTabItem({tabId: todayTabId, itemInfo});
       hideBrowser();
     }
   }
 
-  const onUpdateProgress = currentTabId => {
+  const onUpdateProgress = todayTabId => {
     return (event, progressInfo) => {
       const {id, receivedBytes} = progressInfo;
-      updateTabItem({tabId:currentTabId, itemId:id, property: 'receivedBytes', value: receivedBytes});
+      updateTabItem({tabId:todayTabId, itemId:id, property: 'receivedBytes', value: receivedBytes});
     }
   }
   const onUpdateStatus = status => {
