@@ -70,6 +70,7 @@ function App(props) {
       
       addTabItem({tabId: todayTabId, itemInfo});
       hideBrowser();
+      focusMainWindow();
     }
   }
 
@@ -104,6 +105,11 @@ function App(props) {
     view.setBounds({x:5, y:35, width:0, height:0}); 
     view.setAutoResize({width:false, height:false});
     setStatusHidden(false);
+  }
+
+  const focusMainWindow = () => {
+    const mainWindow = getCurrentWindow();
+    mainWindow.focus();
   }
 
   return (
