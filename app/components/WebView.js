@@ -2,7 +2,8 @@ import React from 'react';
 import Box from '@material-ui/core/Box';
 import {SmallButton} from './template/smallComponents'
 import BorderedBox from './template/BorderedBox';
-import FullHeightContainer from './template/FullHeightContainer'
+import FullHeightContainer from './template/FullHeightContainer';
+import CardListContainer from '../containers/CardListContainer';
 const { BrowserView, BrowserWindow, getCurrentWindow } = require('electron').remote;
 const { ipcRenderer } = require('electron');
 
@@ -32,8 +33,9 @@ export default function WebView(props) {
 
     return (
         <Box flexGrow="0" border="10">
-            <SmallButton size="small" color="primary" variant={"contained"} onClick={showBrowser}>show Browser</SmallButton>
-            <SmallButton size="small" color="primary" variant={"contained"} onClick={hideBrowser}>hide Browser</SmallButton>
+          <SmallButton size="small" color="primary" variant={"contained"} onClick={showBrowser}>show Browser</SmallButton>
+          <SmallButton size="small" color="primary" variant={"contained"} onClick={hideBrowser}>hide Browser</SmallButton>
+          <CardListContainer></CardListContainer>
         </Box>
     )
 }

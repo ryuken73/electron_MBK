@@ -23,33 +23,33 @@ const TextBox = ({children, ...props}) => {
 export default function Item(props){
     const imageShow = false;
     const {fname, savePath, url, totalBytes, receivedBytes, status, downloadStartTime} = props.item;
-    const processedPercent = ((receivedBytes/totalBytes) * 100).toFixed(0);
+    const processedPercent = parseInt(((receivedBytes/totalBytes) * 100).toFixed(0));
     const onClickCheckBox = () => {};
     return (
         <Box display="flex" width="0.9" flexWrap="nowrap" justifyContent="flex-start" alignItems="center">
             <Checkbox color="primary" checked={imageShow} onChange={onClickCheckBox}>Image Show</Checkbox>
             <Grid container spacing={1} alignItems="center">
-                <Grid lg={2}>
+                <Grid item lg={2}>
                     <TextBox>
                         {fname}
                     </TextBox>
                 </Grid>
-                <Grid lg={3}>
+                <Grid item lg={3}>
                     <TextBox>
                         {savePath}
                     </TextBox>
                 </Grid>
-                <Grid lg={1}>
+                <Grid item  lg={1}>
                     <Box mx="10px">
                         <SmallButton size="small" color="primary" variant={"contained"}>open</SmallButton>
                     </Box>
                 </Grid>
-                <Grid lg={2} md={3} sm={3}>
+                <Grid item  lg={2} md={3} sm={3}>
                     <Box mx="10px">
                         <ProgressWithPercent progress={processedPercent}></ProgressWithPercent>
                     </Box>
                 </Grid>
-                <Grid lg={2}>
+                <Grid item  lg={2}>
                     <Box mx="10px">
                         <Typography variant="caption">{receivedBytes} / {totalBytes}</Typography>
                     </Box>

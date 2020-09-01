@@ -1,4 +1,5 @@
 import {createAction, handleActions} from 'redux-actions';
+import {addCardItem} from './itemCardList';
 const utils = require('../utils');
 
 // action types
@@ -12,6 +13,13 @@ export const addTab = createAction(ADD_TAB);
 export const addTabItem = createAction(ADD_TAB_ITEM);
 export const delTabItem = createAction(DEL_TAB_ITEM);
 export const updateTabItem = createAction(UPDATE_TAB_ITEM);
+
+// thunk action creator
+export const addItemNCard = ({tabId, itemInfo}) => (dispatch, getState) => {
+    console.log(tabId, itemInfo);
+    dispatch(addTabItem({tabId, itemInfo}));
+    dispatch(addCardItem({cardId: itemInfo.id, cardInfo: itemInfo}));
+}
 
 const initialState = {
     tabItems: new Map()

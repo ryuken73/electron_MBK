@@ -31,7 +31,7 @@ function App(props) {
   
   const {statusHidden, todayTabId} = props;
   const {setTodayTabId, setStatusHidden} = props.AppActions;
-  const {addTab, addTabItem, updateTabItem} = props.ItemListActions;
+  const {addTab, addItemNCard, addTabItem, updateTabItem} = props.ItemListActions;
 
   console.log('#### rerender app.js', todayTabId)
   React.useEffect(() => {
@@ -68,7 +68,8 @@ function App(props) {
         todayTabId = downloadStartDate;
       }
       
-      addTabItem({tabId: todayTabId, itemInfo});
+      // addTabItem({tabId: todayTabId, itemInfo});
+      addItemNCard({tabId: todayTabId, itemInfo});
       hideBrowser();
       focusMainWindow();
     }
