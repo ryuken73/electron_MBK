@@ -19,11 +19,11 @@ export default function WebView(props) {
         });
         const mainWindow = getCurrentWindow();
         const [width, height] = mainWindow.getSize()
-        webViewBound = {x:0, y:35, width:width-20, height:height-10};
+        webViewBound = {x:0, y:40, width:width-20, height:height-10};
         mainWindow.setBrowserView(view);
         view.setBounds(webViewBound); 
         view.setAutoResize({width:true, height:true})
-        view.webContents.loadURL('http://musicbank.sbs.co.kr');
+        view.webContents.loadURL('http://10.11.32.142');
         view.webContents.on('new-window', (...args) => console.log(args));
         view.webContents.on('will-navigate', (...args) => console.log('will navigate'));
         view.webContents.on('did-finish-load', (...args) => console.log('did finish load'));
@@ -32,9 +32,9 @@ export default function WebView(props) {
     },[])
 
     return (
-        <Box flexGrow="0" border="10">
-          <SmallButton size="small" color="primary" variant={"contained"} onClick={showBrowser}>show Browser</SmallButton>
-          <SmallButton size="small" color="primary" variant={"contained"} onClick={hideBrowser}>hide Browser</SmallButton>
+        <Box display="flex" flexGrow="0" alignItems="center" border="10">
+          <SmallButton size="small" color="primary" variant={"contained"} style={{minWidth:'150px'}} onClick={showBrowser}>show Browser</SmallButton>
+          <SmallButton size="small" color="primary" variant={"contained"} style={{minWidth:'150px'}} onClick={hideBrowser}>hide Browser</SmallButton>
           <CardListContainer></CardListContainer>
         </Box>
     )

@@ -13,8 +13,10 @@ const SmallPaddingIconButton = styled(IconButton)`
     padding: 5px;
 `
 const SmallButton  = styled(Button)`
-    margin: 5px;
-    font-size: 11px;
+    margin: ${props => props.m || "5px"};
+    font-size: ${props => props.fontSize || "11px"};
+    // padding: "5px"
+    
 `
 
 const SmallMarginTextField = styled(TextField)`

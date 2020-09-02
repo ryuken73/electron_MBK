@@ -1,5 +1,5 @@
 import {createAction, handleActions} from 'redux-actions';
-import {addCardItem} from './itemCardList';
+import {addCardItem, updateCardItem} from './itemCardList';
 const utils = require('../utils');
 
 // action types
@@ -19,6 +19,12 @@ export const addItemNCard = ({tabId, itemInfo}) => (dispatch, getState) => {
     console.log(tabId, itemInfo);
     dispatch(addTabItem({tabId, itemInfo}));
     dispatch(addCardItem({cardId: itemInfo.id, cardInfo: itemInfo}));
+}
+
+export const updateItemNCard = ({tabId, itemId, property, value}) => (dispatch, getState) => {
+    console.log(tabId, itemId, property, value);
+    dispatch(updateTabItem({tabId, itemId, property, value}));
+    dispatch(updateCardItem({cardId:itemId, property, value}));
 }
 
 const initialState = {

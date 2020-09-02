@@ -31,7 +31,7 @@ function App(props) {
   
   const {statusHidden, todayTabId} = props;
   const {setTodayTabId, setStatusHidden} = props.AppActions;
-  const {addTab, addItemNCard, addTabItem, updateTabItem} = props.ItemListActions;
+  const {addTab, addItemNCard, addTabItem, updateTabItem, updateItemNCard} = props.ItemListActions;
 
   console.log('#### rerender app.js', todayTabId)
   React.useEffect(() => {
@@ -70,7 +70,7 @@ function App(props) {
       
       // addTabItem({tabId: todayTabId, itemInfo});
       addItemNCard({tabId: todayTabId, itemInfo});
-      hideBrowser();
+      // hideBrowser();
       focusMainWindow();
     }
   }
@@ -78,14 +78,14 @@ function App(props) {
   const onUpdateProgress = todayTabId => {
     return (event, progressInfo) => {
       const {id, receivedBytes} = progressInfo;
-      updateTabItem({tabId:todayTabId, itemId:id, property: 'receivedBytes', value: receivedBytes});
+      updateItemNCard({tabId:todayTabId, itemId:id, property: 'receivedBytes', value: receivedBytes});
     }
   }
 
   const onUpdateStatus = todayTabId => {
     return (event, statusInfo) => {
       const {id, status} = statusInfo;
-      updateTabItem({tabId:todayTabId, itemId:id, property: 'status', value: status});
+      updateItemNCard({tabId:todayTabId, itemId:id, property: 'status', value: status});
       
     }
   } 

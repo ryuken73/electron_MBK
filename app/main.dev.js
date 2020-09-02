@@ -62,7 +62,9 @@ app.on('window-all-closed', () => {
 });
 
 app.on('browser-window-created', (event, window) =>  {
-  window.webContents.on('did-finish-load', () => window.focus())
+  window.webContents.on('did-finish-load', () => window.focus());
+  console.log(Date.now(), 'new window created')
+  // window.webContents.openDevTools();
 })
 
 app.on('ready', async () => {
@@ -76,6 +78,7 @@ app.on('ready', async () => {
   mainWindow = new BrowserWindow({
     show: false,
     width: width,
+    minWidth: 1300,
     height: height,
     backgroundColor: '#252839',
     webPreferences: {

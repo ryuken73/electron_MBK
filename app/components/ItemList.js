@@ -59,7 +59,7 @@ function ItemList(props) {
 
   return (
     <BorderedBox display={hidden ? 'none':'flex'} alignContent="center" alignItems="flex-start" flexGrow="1" border="0" minWidth="auto" flexBasis="0" overflow="auto" bgcolor="black">
-      <Box display="flex" flexDirection="column" flexWrap="wrap" width={1} overflow="auto">
+      <Box display="flex" flexDirection="column" flexWrap="wrap" width={1} overflow="hidden">
         {items.map(item => <Item key={item.id} item={item}></Item>)}
       </Box>
     </BorderedBox>

@@ -33,6 +33,7 @@ export default handleActions({
         const cardItems = new Map(state.cardItems);
         const updateItem = {...cardItems.get(cardId)};
         updateItem[property] = value;
+        cardItems.set(cardId, updateItem);
         return {
             ...state,
             cardItems

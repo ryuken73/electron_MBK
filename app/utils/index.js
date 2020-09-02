@@ -12,7 +12,20 @@ const number = {
         if(unit === 'GB') return (toByteUnit({number, unit:'MB',point})/1024).toFixed(point);
         if(unit === 'TB') return (toByteUnit({number, unit:'GB',point})/1024).toFixed(point);
         return number;
+    },
+    niceBytes(number){
+        //from stackoverflow
+        const units = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+        let l = 0, n = parseInt(number, 10) || 0;
+
+        while(n >= 1024 && ++l){
+            n = n/1024;
+        }
+        //include a decimal point and a tenths-place digit if presenting 
+        //less than ten of KB or greater units
+        return(n.toFixed(n < 10 && l > 0 ? 1 : 0) + ' ' + units[l]);
     }
+
 }
 
 const clone = {

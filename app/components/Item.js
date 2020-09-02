@@ -4,7 +4,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
 import ProgressWithPercent from './template/ProgressWithPercent';
-import {SmallButton, SmallMarginTextField} from './template/smallComponents'
+import {SmallButton, SmallMarginTextField} from './template/smallComponents';
+import utils from '../utils';
 
 const TextBox = ({children, ...props}) => {
     const defaultProps = {
@@ -28,44 +29,42 @@ export default function Item(props){
     return (
         <Box display="flex" width="0.9" flexWrap="nowrap" justifyContent="flex-start" alignItems="center">
             <Checkbox color="primary" checked={imageShow} onChange={onClickCheckBox}>Image Show</Checkbox>
-            <Grid container spacing={1} alignItems="center">
-                <Grid item lg={2}>
+            <Grid container wrap="nowrap" spacing={1} alignItems="center">
+                <Grid item lg={1}>
                     <TextBox>
                         {fname}
                     </TextBox>
                 </Grid>
-                <Grid item lg={3}>
+                <Grid item lg={2}>
                     <TextBox>
                         {savePath}
                     </TextBox>
                 </Grid>
-                <Grid item  lg={1}>
+                <Grid item lg={1}>
                     <Box mx="10px">
                         <SmallButton size="small" color="primary" variant={"contained"}>open</SmallButton>
                     </Box>
                 </Grid>
-                <Grid item  lg={2} md={3} sm={3}>
+                <Grid item  lg={2} md={2} sm={2}>
                     <Box mx="10px">
                         <ProgressWithPercent progress={processedPercent}></ProgressWithPercent>
                     </Box>
                 </Grid>
-                <Grid item  lg={2}>
+                <Grid item lg={2}>
                     <Box mx="10px">
-                        <Typography variant="caption">{receivedBytes} / {totalBytes}</Typography>
+                        <Typography variant="caption">{utils.number.niceBytes(receivedBytes)} / {utils.number.niceBytes(totalBytes)}</Typography>
                     </Box>
                 </Grid>
-
+                <Grid item lg={2}>
+                    <TextBox>
+                        {new Date(downloadStartTime).toLocaleString()}
+                    </TextBox>
+                </Grid>
                 <Grid>
                     <Box mx="10px">
                         <Typography variant="caption">{status}</Typography>
                     </Box>
                 </Grid>
-                <Grid>
-                    <TextBox>
-                        {new Date(downloadStartTime).toLocaleString()}
-                    </TextBox>
-                </Grid>
-
             </Grid>
 
         </Box>
