@@ -10,7 +10,7 @@
  *
  * @flow
  */
-import { app, BrowserWindow, screen } from 'electron';
+import { app, BrowserWindow, screen, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -78,7 +78,7 @@ app.on('ready', async () => {
   mainWindow = new BrowserWindow({
     show: false,
     width: width,
-    minWidth: 1300,
+    minWidth: 1200,
     height: height,
     backgroundColor: '#252839',
     webPreferences: {
@@ -87,12 +87,19 @@ app.on('ready', async () => {
     }
   }); 
 
+  let saveDirectory = null;
+  ipcMain.on('setSaveDirectory', (event,arg) => {
+    console.log(`ipcMain setSaveDirectory: `, arg);
+    saveDirectory = arg;
+  })
+
   const session = mainWindow.webContents.session;
   session.on('will-download', (event, item, webContents) => {
-      console.log('downloading!!!')
+      console.log('downloading!!!', saveDirectory);
       // event.preventDefault()
       const fname = item.getFilename();
-      const downloadFname = "d:\\temp\\" + fname;
+      // const downloadFname = "d:\\temp\\" + fname;
+      const downloadFname = path.join(saveDirectory, fname);
       item.setSavePath(downloadFname)
 
       const id = item.getStartTime();

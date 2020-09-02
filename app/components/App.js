@@ -10,6 +10,9 @@ import ItemTabContainer from '../containers/ItemTabContainer';
 import MessageContainer from './MessagePanel';
 const { BrowserView, getCurrentWindow } = require('electron').remote;
 const { ipcRenderer } = require('electron');
+const ConfigParser = require('configparser');
+const config = new ConfigParser();
+const path = require('path');
 
 const theme = createMuiTheme({
   typography: {
@@ -29,12 +32,17 @@ const theme = createMuiTheme({
 
 function App(props) {
   
-  const {statusHidden, todayTabId} = props;
+  const {statusHidden, todayTabId} = props; 
   const {setTodayTabId, setStatusHidden} = props.AppActions;
   const {addTab, addItemNCard, addTabItem, updateTabItem, updateItemNCard} = props.ItemListActions;
+  const {setSaveDirectory} = props.ControlPanelActions;
 
   console.log('#### rerender app.js', todayTabId)
   React.useEffect(() => {
+    config.read(path.resolve('D:\\002.Code\\003.electron\\electron_MBK\\mbconfig.txt'));
+    const saveDirectory = path.resolve(config.get('AUDIO', 'AudioPath'));
+    setSaveDirectory(saveDirectory);
+    ipcRenderer.send('setSaveDirectory', saveDirectory);
     const tabId = new Date().toLocaleDateString();
     addTab(tabId);
     setTodayTabId(tabId);

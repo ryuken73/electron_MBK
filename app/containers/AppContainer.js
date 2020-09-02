@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import App from '../components/App';
 import * as appActions from '../modules/app';
 import * as itemListActions from '../modules/itemList';
+import * as controlPanelActions from '../modules/controlPanel';
 
 function mapStateToProps(state, ownProps) {
   console.log(state)
@@ -16,6 +17,7 @@ function mapDispatchToProps(dispatch) {
   return {
     AppActions: bindActionCreators(appActions, dispatch),
     ItemListActions: bindActionCreators(itemListActions, dispatch),
+    ControlPanelActions: bindActionCreators(controlPanelActions, dispatch),
   };
 }
 

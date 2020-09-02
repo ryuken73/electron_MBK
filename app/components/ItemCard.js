@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import {SmallButton} from './template/smallComponents';
 import utils from '../utils';
 
+const { shell } = require('electron').remote;
+
 const StyledCardContent = withStyles({
   root: {
     padding: '0px!important'
@@ -35,6 +37,8 @@ const useStyles = makeStyles({
   },
 });
 
+
+
 const TextBox = ({children, ...props}) => {
 
   const defaultProps = {
@@ -58,12 +62,18 @@ export default function ItemCard(props) {
     setShow(true);
   },[])
 
-  const {fname, receivedBytes, totalBytes} = props.cardItem;
+  const {fname, receivedBytes, totalBytes, savePath} = props.cardItem;
+  const disabled = (receivedBytes !== totalBytes)
   const formattedRecvBytes = utils.number.niceBytes(receivedBytes);  
   const formattedTotalBytes = utils.number.niceBytes(totalBytes);  
   console.log('!!!!!!!!!!!!!',formattedRecvBytes, formattedTotalBytes)
   const classes = useStyles();
   const bull = <span className={classes.bullet}>•</span>;
+
+  const onClickOpen = event => {
+    // shell.openItem(savePath)
+    shell.showItemInFolder(savePath)
+  }
 
   return (
     <Grow in={show} timeout={1000}>
@@ -82,8 +92,10 @@ export default function ItemCard(props) {
               fontSize={"10px"}
               // padding={"5px"}
               m="3px" 
+              disabled={disabled}
               color="primary" 
               variant={"contained"}
+              onClick={onClickOpen}
             >open
             </SmallButton>      
           </Box>

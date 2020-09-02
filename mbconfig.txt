@@ -1,0 +1,2 @@
+[AUDIO]
+AudioPath=c:\temp\류건우
