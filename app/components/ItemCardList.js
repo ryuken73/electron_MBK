@@ -10,11 +10,12 @@ import ItemCard from './ItemCard';
 
 export default function ItemCardList(props) {
   const {cardItems} = props;
+  const {delCardItem} = props.CardListActions;
   console.log('$$$$$$$$$$$$$$$$$$$$$$',cardItems)
   return (
     <Box display="flex" flexWrap="nowrap" flexGrow={0} overflow="hidden" m="2px"> 
       {[...cardItems].reverse().map(([cardId, cardItem]) => {
-        return <ItemCard key={cardId} cardItem={cardItem}></ItemCard>
+        return <ItemCard key={cardId} cardItem={cardItem} delCardItem={delCardItem}></ItemCard>
       })}
     </Box>
   );

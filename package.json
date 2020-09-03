@@ -58,7 +58,9 @@
   "build": {
     "productName": "ElectronMBK",
     "appId": "co.kr.sbs.ElectronMBK",
-    "asarUnpack" : ["config.json"],
+    "asarUnpack": [
+      "config.json"
+    ],
     "files": [
       "dist/",
       "node_modules/",
@@ -265,6 +267,7 @@
     "@fortawesome/fontawesome-free": "^5.11.2",
     "@hot-loader/react-dom": "^16.11.0",
     "@material-ui/core": "^4.9.7",
+    "@material-ui/icons": "^4.9.1",
     "configparser": "^0.3.6",
     "connected-react-router": "^6.6.0",
     "core-js": "3.4.1",

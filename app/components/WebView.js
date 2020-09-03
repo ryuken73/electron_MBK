@@ -9,6 +9,7 @@ const { ipcRenderer } = require('electron');
 
 export default function WebView(props) {
     const {showBrowser, hideBrowser, hostAddress} = props;
+    const {clearItemCards} = props;
     let webViewBound;
     React.useEffect(() => {
         const view = new BrowserView({
@@ -33,9 +34,13 @@ export default function WebView(props) {
 
     return (
         <Box display="flex" flexGrow="0" alignItems="center" border="10">
-          <SmallButton size="small" color="primary" variant={"contained"} style={{minWidth:'150px'}} onClick={showBrowser}>show Browser</SmallButton>
-          <SmallButton size="small" color="primary" variant={"contained"} style={{minWidth:'150px'}} onClick={hideBrowser}>hide Browser</SmallButton>
+          <SmallButton size="small" color="primary" variant={"contained"} lineHeight={2} style={{minWidth:'150px'}} onClick={showBrowser}>show Browser</SmallButton>
+          <SmallButton size="small" color="primary" variant={"contained"} lineHeight={2} style={{minWidth:'150px'}} onClick={hideBrowser}>hide Browser</SmallButton>
           <CardListContainer></CardListContainer>
+          <Box ml="auto">
+            <SmallButton size="small" color="primary" variant={"contained"} lineHeight={2} style={{minWidth:'100px'}} onClick={clearItemCards}>Close All</SmallButton>
+          </Box>
+
         </Box>
     )
 }

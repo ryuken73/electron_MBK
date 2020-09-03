@@ -38,12 +38,14 @@ function App(props) {
   const {setTodayTabId, setStatusHidden, setHostAddress} = props.AppActions;
   const {addTab, addItemNCard, addTabItem, updateTabItem, updateItemNCard} = props.ItemListActions;
   const {setSaveDirectory} = props.ControlPanelActions;
+  const {clearItemCards} = props.CardListActions;
 
   console.log('#### rerender app.js', todayTabId)
   React.useEffect(() => {
     const localStorageKey = 'musicbank';
     const defaultConfig = {
-      mbconfigFile: 'D:\\002.Code\\003.electron\\electron_MBK\\mbconfig.txt',
+      // mbconfigFile: 'D:\\002.Code\\003.electron\\electron_MBK\\mbconfig.txt',
+      mbconfigFile: path.join(process.cwd(),'mbconfig.txt'),
       hostAddress: 'http://musicbank.sbs.co.kr'
     }
     const store = utils.store.getStore({
@@ -55,9 +57,13 @@ function App(props) {
     const hostToConnect = store.get('hostAddress') || 'http://musicbank.sbs.co.kr';
     console.log(hostToConnect)
     setHostAddress(hostToConnect);
-
-    config.read(path.resolve(store.get('mbconfigFile')));
-    const saveDirectory = path.resolve(config.get('AUDIO', 'AudioPath'));
+    let saveDirectory = process.cwd();
+    try {
+      config.read(path.resolve(store.get('mbconfigFile')));
+      saveDirectory = path.resolve(config.get('AUDIO', 'AudioPath'));
+    } catch(err){
+      console.error('error loading mbsConfig.txt');
+    }
     setSaveDirectory(saveDirectory);
     ipcRenderer.send('setSaveDirectory', saveDirectory);
     const tabId = new Date().toLocaleDateString();
@@ -141,7 +147,7 @@ function App(props) {
   return (
     <ThemeProvider theme={theme}>
       <Box display="flex" flexDirection="column" height="1">
-        <WebView showBrowser={showBrowser} hideBrowser={hideBrowser} hostAddress={hostAddress}></WebView>   
+        <WebView showBrowser={showBrowser} hideBrowser={hideBrowser} hostAddress={hostAddress} clearItemCards={clearItemCards}></WebView>   
         <Box display={statusHidden ? "none": "flex"} className="itemList" flexDirection="column" flexGrow="1" px="3px">
           <ControlPanelContainer></ControlPanelContainer>
           <ItemTabContainer></ItemTabContainer>

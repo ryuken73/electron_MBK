@@ -4,6 +4,7 @@ import App from '../components/App';
 import * as appActions from '../modules/app';
 import * as itemListActions from '../modules/itemList';
 import * as controlPanelActions from '../modules/controlPanel';
+import * as cardListActions from '../modules/itemCardList';
 
 function mapStateToProps(state, ownProps) {
   console.log(state)
@@ -19,6 +20,7 @@ function mapDispatchToProps(dispatch) {
     AppActions: bindActionCreators(appActions, dispatch),
     ItemListActions: bindActionCreators(itemListActions, dispatch),
     ControlPanelActions: bindActionCreators(controlPanelActions, dispatch),
+    CardListActions: bindActionCreators(cardListActions, dispatch)
   };
 }
 

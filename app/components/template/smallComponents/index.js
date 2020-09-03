@@ -10,11 +10,12 @@ const defaultBgColor = deepPurple[800];
 const defaultFontColor = 'white';
 
 const SmallPaddingIconButton = styled(IconButton)`
-    padding: 5px;
+    padding: 2px;
 `
 const SmallButton  = styled(Button)`
     margin: ${props => props.m || "5px"};
     font-size: ${props => props.fontSize || "11px"};
+    line-height: ${props => props.lineHeight || 1.75}
     // padding: "5px"
     
 `
