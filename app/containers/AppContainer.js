@@ -9,7 +9,8 @@ function mapStateToProps(state, ownProps) {
   console.log(state)
   return {
     statusHidden: state.app.statusHidden,
-    todayTabId: state.app.todayTabId
+    todayTabId: state.app.todayTabId,
+    hostAddress: state.app.hostAddress
   }
 }
 

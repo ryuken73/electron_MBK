@@ -2,6 +2,36 @@ const fs = require('fs');
 const mkdirp = require('mkdirp');
 const path = require('path');
 
+class LocalStorage {
+    constructor(localStorageKey, opts){
+        this.localStorageKey = localStorageKey;
+        this.store = window.localStorage;
+        this.data = parseData(this.store, localStorageKey, opts)
+        console.log(this.data)
+    }
+    get = (key) => {
+        return this.data[key]
+    }
+    set = (key,value) => {
+        this.data[key] = value;
+        console.log(this.data)
+        this.store.setItem(this.localStorageKey, JSON.stringify(this.data));
+    }
+    delete = (key) => {
+        delete this.data[key];
+        this.store.setItem(this.localStorageKey, JSON.stringify(this.data));
+    }
+}
+
+function parseData(localStorage, localStorageKey, opts){
+    const savedConfig = JSON.parse(localStorage.getItem(localStorageKey));
+    if(savedConfig === null){
+        localStorage.setItem(localStorageKey, JSON.stringify(opts));
+        return opts
+    }
+    return savedConfig;
+}
+
 const number = {
     group1000(number){
         return new Intl.NumberFormat().format(number)
@@ -218,8 +248,18 @@ const browserStorage = {
     clear: () => this.storage.clear()
 }
 
+const store = {
+    getStore : (options) => {
+        const {type, key, fname, opts} = options;
+        if(type === 'localStorage') return new LocalStorage(key, opts);
+        if(type === 'jsonFile') return new FileStorage(fname, opts);
+        return null
+    }
+}
+
 module.exports = {
     browserStorage,
+    store,
     clone,
     fp,
     file,

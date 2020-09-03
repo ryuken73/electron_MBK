@@ -8,7 +8,7 @@ const { BrowserView, BrowserWindow, getCurrentWindow } = require('electron').rem
 const { ipcRenderer } = require('electron');
 
 export default function WebView(props) {
-    const {showBrowser, hideBrowser} = props;
+    const {showBrowser, hideBrowser, hostAddress} = props;
     let webViewBound;
     React.useEffect(() => {
         const view = new BrowserView({
@@ -23,13 +23,13 @@ export default function WebView(props) {
         mainWindow.setBrowserView(view);
         view.setBounds(webViewBound); 
         view.setAutoResize({width:true, height:true})
-        view.webContents.loadURL('http://10.11.32.142');
+        view.webContents.loadURL(hostAddress);
         view.webContents.on('new-window', (...args) => console.log(args));
         view.webContents.on('will-navigate', (...args) => console.log('will navigate'));
         view.webContents.on('did-finish-load', (...args) => console.log('did finish load'));
         view.webContents.on('did-frame-finish-load', (...args) => console.log('did finish frmae load'));
         view.webContents.on('did-navigate', (...args) => console.log('did navigate'));
-    },[])
+    },[hostAddress])
 
     return (
         <Box display="flex" flexGrow="0" alignItems="center" border="10">

@@ -58,13 +58,15 @@
   "build": {
     "productName": "ElectronMBK",
     "appId": "co.kr.sbs.ElectronMBK",
+    "asarUnpack" : ["config.json"],
     "files": [
       "dist/",
       "node_modules/",
       "app.html",
       "main.prod.js",
       "main.prod.js.map",
-      "package.json"
+      "package.json",
+      "config.json"
     ],
     "dmg": {
       "contents": [
