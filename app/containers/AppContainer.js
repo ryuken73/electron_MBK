@@ -11,7 +11,8 @@ function mapStateToProps(state, ownProps) {
   return {
     statusHidden: state.app.statusHidden,
     todayTabId: state.app.todayTabId,
-    hostAddress: state.app.hostAddress
+    hostAddress: state.app.hostAddress,
+    cardItems: state.itemCardList.cardItems
   }
 }
 

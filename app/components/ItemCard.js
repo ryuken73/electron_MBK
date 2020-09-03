@@ -58,13 +58,22 @@ const TextBox = ({children, ...props}) => {
 
 export default function ItemCard(props) {
   console.log(props)
+  const {id:cardId, fname, receivedBytes, totalBytes, savePath} = props.cardItem;
 
   const [show, setShow] = React.useState(false);
+  // const [textShow, setTextShow] = React.useState(false);
   React.useEffect(() => {
     setShow(true);
   },[])
 
-  const {id:cardId, fname, receivedBytes, totalBytes, savePath} = props.cardItem;
+  // not work
+  // React.useEffect(() => {
+  //   setTextShow(false);
+  //   setTimeout(() => {
+  //     setTextShow(true);
+  //   },500)
+  // },[receivedBytes])
+
   const {delCardItem} = props;
   const disabled = (receivedBytes !== totalBytes)
   const formattedRecvBytes = utils.number.niceBytes(receivedBytes);  
@@ -94,9 +103,11 @@ export default function ItemCard(props) {
               <TextBox fontWeight="bold">
                 {fname}  
               </TextBox>      
-              <TextBox fontSize="9px" color="gray" mt="2px">
-                ({formattedRecvBytes}/{formattedTotalBytes})
-              </TextBox> 
+              {/* <Grow in={textShow} timeout={1000}> */}
+                <TextBox fontSize="9px" color="gray" mt="2px">
+                  ({formattedRecvBytes}/{formattedTotalBytes})
+                </TextBox> 
+              {/* </Grow> */}
             </Box>  
             <SmallButton 
               fontSize={"10px"}

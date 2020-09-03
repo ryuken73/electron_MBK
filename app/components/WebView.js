@@ -8,7 +8,8 @@ const { BrowserView, BrowserWindow, getCurrentWindow } = require('electron').rem
 const { ipcRenderer } = require('electron');
 
 export default function WebView(props) {
-    const {showBrowser, hideBrowser, hostAddress} = props;
+    const {showBrowser, hideBrowser, hostAddress, cardItems} = props;
+    console.log(cardItems)
     const {clearItemCards} = props;
     let webViewBound;
     React.useEffect(() => {
@@ -37,7 +38,7 @@ export default function WebView(props) {
           <SmallButton size="small" color="primary" variant={"contained"} lineHeight={2} style={{minWidth:'150px'}} onClick={showBrowser}>show Browser</SmallButton>
           <SmallButton size="small" color="primary" variant={"contained"} lineHeight={2} style={{minWidth:'150px'}} onClick={hideBrowser}>hide Browser</SmallButton>
           <CardListContainer></CardListContainer>
-          <Box ml="auto">
+          <Box ml="auto" display={cardItems.size === 0 && "none"}>
             <SmallButton size="small" color="primary" variant={"contained"} lineHeight={2} style={{minWidth:'100px'}} onClick={clearItemCards}>Close All</SmallButton>
           </Box>
 

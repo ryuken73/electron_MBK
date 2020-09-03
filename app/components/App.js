@@ -34,13 +34,13 @@ const theme = createMuiTheme({
 
 function App(props) {
   
-  const {statusHidden, todayTabId, hostAddress} = props; 
+  const {statusHidden, todayTabId, hostAddress, cardItems} = props; 
   const {setTodayTabId, setStatusHidden, setHostAddress} = props.AppActions;
   const {addTab, addItemNCard, addTabItem, updateTabItem, updateItemNCard} = props.ItemListActions;
   const {setSaveDirectory} = props.ControlPanelActions;
   const {clearItemCards} = props.CardListActions;
 
-  console.log('#### rerender app.js', todayTabId)
+  console.log('#### rerender app.js', todayTabId, cardItems)
   React.useEffect(() => {
     const localStorageKey = 'musicbank';
     const defaultConfig = {
@@ -147,7 +147,13 @@ function App(props) {
   return (
     <ThemeProvider theme={theme}>
       <Box display="flex" flexDirection="column" height="1">
-        <WebView showBrowser={showBrowser} hideBrowser={hideBrowser} hostAddress={hostAddress} clearItemCards={clearItemCards}></WebView>   
+        <WebView 
+          showBrowser={showBrowser} 
+          hideBrowser={hideBrowser} 
+          hostAddress={hostAddress} 
+          cardItems={cardItems}
+          clearItemCards={clearItemCards}
+        ></WebView>   
         <Box display={statusHidden ? "none": "flex"} className="itemList" flexDirection="column" flexGrow="1" px="3px">
           <ControlPanelContainer></ControlPanelContainer>
           <ItemTabContainer></ItemTabContainer>
