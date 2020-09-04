@@ -65,7 +65,7 @@ function App(props) {
       console.error('error loading mbsConfig.txt');
     }
     setSaveDirectory(saveDirectory);
-    ipcRenderer.send('setSaveDirectory', saveDirectory);
+    // ipcRenderer.send('setSaveDirectory', saveDirectory);
     const tabId = new Date().toLocaleDateString();
     addTab(tabId);
     setTodayTabId(tabId);

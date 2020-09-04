@@ -63,6 +63,21 @@ app.on('window-all-closed', () => {
 
 app.on('browser-window-created', (event, window) =>  {
   window.webContents.on('did-finish-load', () => window.focus());
+  console.log(window.getChildWindows())
+  window.on('close', (event) => {
+    // event.preventDefault();
+    console.log('window about to close')
+  })
+
+  window.onbeforeunload = (e) => {
+    console.log('I do not want to be closed')
+  
+    // Unlike usual browsers that a message box will be prompted to users, returning
+    // a non-void value will silently cancel the close.
+    // It is recommended to use the dialog API to let the user confirm closing the
+    // application.
+    e.returnValue = false // equivalent to `return false` but not recommended
+  }
   console.log(Date.now(), 'new window created')
   // window.webContents.openDevTools();
 })
@@ -160,7 +175,10 @@ app.on('ready', async () => {
     }
   });
 
-  mainWindow.webContents.on('new-window', ([...args]) => console.log(args));
+  // mainWindow.webContents.on('new-window', ([...args]) => {
+  //   console.log(mainWindow.getChildWindows());
+  //   console.log(args)
+  // })
 
   mainWindow.on('closed', () => {
     mainWindow = null;

@@ -26,9 +26,13 @@ export default function WebView(props) {
         view.setBounds(webViewBound); 
         view.setAutoResize({width:true, height:true})
         view.webContents.loadURL(hostAddress);
-        view.webContents.on('new-window', (...args) => console.log(args));
+        // view.webContents.setUserAgent('electronMBK');
+        view.webContents.on('new-window', (...args) => {
+          console.log('new-window in WebView');
+          console.log(args);
+        }); 
         view.webContents.on('will-navigate', (...args) => console.log('will navigate'));
-        view.webContents.on('did-finish-load', (...args) => console.log('did finish load'));
+        view.webContents.on('did-finish-load', (...args) => console.log('did finish load', args));
         view.webContents.on('did-frame-finish-load', (...args) => console.log('did finish frmae load'));
         view.webContents.on('did-navigate', (...args) => console.log('did navigate'));
     },[hostAddress])

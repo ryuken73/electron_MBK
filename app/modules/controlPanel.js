@@ -1,5 +1,7 @@
 import {createAction, handleActions} from 'redux-actions';
 const utils = require('../utils');
+const { ipcRenderer } = require('electron');
+
 
 // action types
 const SET_SAVE_DIRECTORY = 'controlPanel/SET_SAVE_DIRECTORY';
@@ -20,6 +22,7 @@ export default handleActions({
     [SET_SAVE_DIRECTORY]: (state, action) => {
         console.log('%%%%%%%%%%%%%%%%', action.payload);
         const directory = action.payload;
+        ipcRenderer.send('setSaveDirectory', directory);
         return {
             ...state,
             saveDirectory: directory
