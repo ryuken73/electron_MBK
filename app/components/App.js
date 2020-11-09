@@ -46,7 +46,7 @@ function App(props) {
     const defaultConfig = {
       // mbconfigFile: 'D:\\002.Code\\003.electron\\electron_MBK\\mbconfig.txt',
       mbconfigFile: path.join(process.cwd(),'mbconfig.txt'),
-      hostAddress: 'http://musicbank.sbs.co.kr'
+      hostAddress: 'http://78.142.29.42 '
     }
     const store = utils.store.getStore({
       type:'localStorage', 
@@ -54,7 +54,9 @@ function App(props) {
       opts:defaultConfig
     });
 
-    const hostToConnect = store.get('hostAddress') || 'http://musicbank.sbs.co.kr';
+    // const hostToConnect = store.get('hostAddress') || 'http://78.142.29.42';
+    const hostToConnect = 'http://musicbank.sbs.co.kr'
+
     console.log(hostToConnect)
     setHostAddress(hostToConnect);
     let saveDirectory = process.cwd();

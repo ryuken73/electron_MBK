@@ -10,7 +10,7 @@
  *
  * @flow
  */
-import { app, BrowserWindow, screen, ipcMain } from 'electron';
+import { app, BrowserWindow, screen, ipcMain, BrowserView } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -62,8 +62,11 @@ app.on('window-all-closed', () => {
 });
 
 app.on('browser-window-created', (event, window) =>  {
-  window.webContents.on('did-finish-load', () => window.focus());
-  console.log(window.getChildWindows())
+  window.webContents.on('did-finish-load', () => {
+    console.log('window webcontent on did-finish-load')
+    window.focus()
+  });
+  // console.log(window.getChildWindows())
   window.on('close', (event) => {
     // event.preventDefault();
     console.log('window about to close')
@@ -81,6 +84,20 @@ app.on('browser-window-created', (event, window) =>  {
   console.log(Date.now(), 'new window created')
   // window.webContents.openDevTools();
 })
+
+// app.on('browser-window-focus', () => console.log('browser-window focused'))
+
+app.on('web-contents-created', (event, webContents) => {
+  console.log('web-contennts-created:', webContents.getURL());
+  console.log('web-contennts-created:', webContents.getTitle());
+  console.log('web-contennts-created:', webContents.isLoading());
+  // below works!!
+  webContents.on('new-window', (...args) => {
+    const [event] = args;
+    event.preventDefault();
+    console.log('##### new window in main process')
+  })
+});
 
 app.on('ready', async () => {
   if (
@@ -104,11 +121,21 @@ app.on('ready', async () => {
 
   let saveDirectory = null;
   ipcMain.on('setSaveDirectory', (event,arg) => {
-    console.log(`ipcMain setSaveDirectory: `, arg);
+    console.log(`ipcMain setSaveDirectory: `);
     saveDirectory = arg;
   })
 
+  // ipcMain.on('new-browserView', browserView => {
+  //   console.log('ipcMain new-browserview created:')
+  //   const webView = mainWindow.getBrowserView();
+  //   console.log('in new-browserView:url:', webView.webContents.getURL())
+  //   webView.webContents.on('new-window', () => console.log('new-window:url:',webView.webContents.getURL()))
+  //   webView.webContents.on('did-finish-load', () => console.log('did-finish-load in main'))
+  // })
+
   const session = mainWindow.webContents.session;
+  // to logging web request
+  // session.webRequest.onCompleted([], req => console.log(req.statusCode, req.url))
   session.on('will-download', (event, item, webContents) => {
       console.log('downloading!!!', saveDirectory);
       // event.preventDefault()
@@ -173,12 +200,8 @@ app.on('ready', async () => {
       mainWindow.show();
       mainWindow.focus();
     }
+    console.log('mainWindow.webContents did-finish-load')
   });
-
-  // mainWindow.webContents.on('new-window', ([...args]) => {
-  //   console.log(mainWindow.getChildWindows());
-  //   console.log(args)
-  // })
 
   mainWindow.on('closed', () => {
     mainWindow = null;
