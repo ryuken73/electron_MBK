@@ -29,7 +29,7 @@ export default function WebView(props) {
         // view.webContents.setUserAgent('electronMBK');
         view.webContents.on('new-window', (...args) => {
           const [event, url, frameName, disposition, options, additionalFeatures, referrer, postBody] = args;
-          // event.preventDefault()  // not work in renderer process
+          // event.preventDefault()  // Not work in renderer process! instead use in main process.
           console.log('new-window in WebView');
           console.log(options);
           console.log(url);

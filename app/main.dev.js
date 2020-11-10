@@ -88,14 +88,21 @@ app.on('browser-window-created', (event, window) =>  {
 // app.on('browser-window-focus', () => console.log('browser-window focused'))
 
 app.on('web-contents-created', (event, webContents) => {
-  console.log('web-contennts-created:', webContents.getURL());
-  console.log('web-contennts-created:', webContents.getTitle());
-  console.log('web-contennts-created:', webContents.isLoading());
-  // below works!!
+  if(webContents.getURL().startsWith('chrome-devtools')) return;
+  // this works!!
   webContents.on('new-window', (...args) => {
-    const [event] = args;
+    const [event, url, frameName, disposition, options, additionalFeatures, referrer, postBody] = args;
     event.preventDefault();
-    console.log('##### new window in main process')
+    console.log('##### new window in main process');
+    const {height, width} = options;
+    const win = new BrowserWindow({
+      webContents: options.webContents, // use existing webContents if provided
+      show: false,
+      height: height+60,
+      width: width+16
+    })
+    win.once('ready-to-show', () => win.show())
+    event.newGuest = win
   })
 });
 
