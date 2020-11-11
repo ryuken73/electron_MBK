@@ -28,11 +28,17 @@ export default function WebView(props) {
         view.webContents.loadURL(hostAddress);
         // view.webContents.setUserAgent('electronMBK');
         view.webContents.on('new-window', (...args) => {
+          const [event, url, frameName, disposition, options, additionalFeatures, referrer, postBody] = args;
+          // event.preventDefault()  // Not work in renderer process! instead use in main process.
           console.log('new-window in WebView');
-          console.log(args);
+          console.log(options);
+          console.log(url);
+          console.log(args)
         }); 
         view.webContents.on('will-navigate', (...args) => console.log('will navigate'));
-        view.webContents.on('did-finish-load', (...args) => console.log('did finish load', args));
+        view.webContents.on('did-finish-load', (...args) => {
+          console.log('did finish load', args);
+        });
         view.webContents.on('did-frame-finish-load', (...args) => console.log('did finish frmae load'));
         view.webContents.on('did-navigate', (...args) => console.log('did navigate'));
     },[hostAddress])

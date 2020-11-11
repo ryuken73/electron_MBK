@@ -9,7 +9,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import {SmallButton, SmallPaddingIconButton} from './template/smallComponents';
-import utils from '../utils';
+import utils from '../utils'; 
+const path = require('path');
 
 const { shell } = require('electron').remote;
 
@@ -22,8 +23,7 @@ const StyledCardContent = withStyles({
 const useStyles = makeStyles({
   card: {
     marginLeft: '5px',
-    overflow: "visible"
-    // minWidth: 250,
+    overflow: "visible",
   },
   bullet: {
     display: 'inline-block',
@@ -38,8 +38,6 @@ const useStyles = makeStyles({
   },
 });
 
-
-
 const TextBox = ({children, ...props}) => {
 
   const defaultProps = {
@@ -47,7 +45,8 @@ const TextBox = ({children, ...props}) => {
       fontSize: 11,
       overflow: "hidden",
       textOverflow: "ellipsis",
-      whiteSpace: "nowrap"
+      whiteSpace: "nowrap",
+      maxWidth: "100px"
   }
   const mergedProps = {
       ...defaultProps,
@@ -59,6 +58,8 @@ const TextBox = ({children, ...props}) => {
 export default function ItemCard(props) {
   console.log(props)
   const {id:cardId, fname, receivedBytes, totalBytes, savePath} = props.cardItem;
+  const extname = path.extname(fname);
+  const filename = fname.replace(extname,'');
 
   const [show, setShow] = React.useState(false);
   // const [textShow, setTextShow] = React.useState(false);
@@ -66,21 +67,12 @@ export default function ItemCard(props) {
     setShow(true);
   },[])
 
-  // not work
-  // React.useEffect(() => {
-  //   setTextShow(false);
-  //   setTimeout(() => {
-  //     setTextShow(true);
-  //   },500)
-  // },[receivedBytes])
-
   const {delCardItem} = props;
   const disabled = (receivedBytes !== totalBytes)
   const formattedRecvBytes = utils.number.niceBytes(receivedBytes);  
   const formattedTotalBytes = utils.number.niceBytes(totalBytes);  
   console.log('!!!!!!!!!!!!!',formattedRecvBytes, formattedTotalBytes)
   const classes = useStyles();
-  const bull = <span className={classes.bullet}>•</span>;
 
   const deleteCardItem = React.useCallback(event => {
     delCardItem(cardId); 
@@ -100,9 +92,14 @@ export default function ItemCard(props) {
               <CloseIcon fontSize="small"></CloseIcon>
             </SmallPaddingIconButton>
             <Box display='flex' flexDirection="column">
-              <TextBox fontWeight="bold">
-                {fname}  
-              </TextBox>      
+              <Box display='flex'>
+                <TextBox mr={"0px"} fontWeight="bold">
+                  {filename}  
+                </TextBox>      
+                <TextBox mr={"5px"} ml={"0px"} fontWeight="bold">
+                  {extname}  
+                </TextBox>    
+              </Box>
               {/* <Grow in={textShow} timeout={1000}> */}
                 <TextBox fontSize="9px" color="gray" mt="2px">
                   ({formattedRecvBytes}/{formattedTotalBytes})
